@@ -3,7 +3,7 @@ package membership;
 /*
 DTO(Data Transfer Object)
 : JSP와 Java 파일간에 데이터를 전달하기 위한 객체로 자바빈 규약에 의해 제작한다. 
-자바빈 규약은 책 114페이지를 참조한다.
+자바빈 규약은 책 114페이지를 참조한다. 대부분 테이블 1개 = DTO 1개
 */
 public class MemberDTO {
 	//멤버변수 : member 테이블의 컬럼과 동일하게 생성한다.
