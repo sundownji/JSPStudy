@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+<!-- JSP 최상단에 인클루드 하여 로그인 정보가 없다면 즉시 로그인 페이지로 이동시킨다.  -->
 <%@ include file="./IsLoggedIn.jsp"%>  
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,7 @@
 <meta charset="UTF-8">
 <title>회원제 게시판</title>
 <script type="text/javascript">
+/* 글쓰기 페이지에서 제목과 내용이 입력되었는지 검증하는 JS코드  */
 	function validateForm(form) {  // 폼 내용 검증
 	    if (form.title.value == "") {
 	        alert("제목을 입력하세요.");
@@ -24,9 +26,13 @@
 <body>
 <jsp:include page="../Common/Link.jsp" />
 	<h2>회원제 게시판 - 글쓰기(Write)</h2>
+	<!-- 글쓰기 폼은 반드시 post방식으로 제작해야한다. get방식은 파일을
+	첨부할 수 없고, 전송량도 4kb로 제한된다. 하지만 post는 전송량의
+	제한이 없고 이미지,음원 등의 파일도 전송할 수 있기 때문이다. -->
 	<form name="writeFrm" method="post" action="WriteProcess.jsp"
 	      onsubmit="return validateForm(this);">
 	    <table border="1" width="90%">
+	    <!--session 영역에 로그인 정보가 남아있기 때문에 이름이 필요 없음  -->
 	        <tr>
 	            <td>제목</td>
 	            <td>
