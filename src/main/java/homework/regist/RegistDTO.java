@@ -13,6 +13,25 @@ public class RegistDTO {
 	private String mobile;
 	private String sms; //sms수신여부
 	
+	public RegistDTO() {};
+	
+	//인수를 가진 인수생성자
+	//매개변수랑 멤버변수랑 같기 때문에 this로 구분
+	public RegistDTO(String id, String pass, String name, String email, String mailing, String zipcode, String addr1,
+			String addr2, String mobile, String sms) {
+		super();
+		this.id = id;
+		this.pass = pass;
+		this.name = name;
+		this.email = email;
+		this.mailing = mailing;
+		this.zipcode = zipcode;
+		this.addr1 = addr1;
+		this.addr2 = addr2;
+		this.mobile = mobile;
+		this.sms = sms;
+	}
+	
 	//getter,setter 정의
 	public String getId() {
 		return id;

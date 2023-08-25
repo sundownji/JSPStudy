@@ -27,12 +27,12 @@ dto.setAddr1(addr1);
 dto.setAddr2(addr2);
 dto.setMobile(mobile);
 dto.setSms(sms);
+//전달하는게 많기 때문에 객체 하나 만들어서 다 전달하는게 편함
 
 //DAO객체 생성 및 INSERT처리
 //applcation해야 web.xml 정보를 가져올 수 있음
 RegistDAO dao = new RegistDAO(application);
 int result = dao.registInsert(dto);
-dao.close();
 
 if(result==1){
 	out.println("입력 성공");

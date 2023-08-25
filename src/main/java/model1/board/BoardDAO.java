@@ -227,6 +227,74 @@ public class BoardDAO extends JDBConnect {
 		}
 		return result;
 	}
+	
+	
+	//매개변수 맵타입, 리스트 타입의 셀렉트리스트페이지 메서드(게시물 목록 출력시 페이징 기능 추가)
+	public List<BoardDTO> selectListPage(Map<String, Object> map){
+		
+		/*List 계열의 컬렉션을 생성한다. (ArrayList, Link~)
+		 이때 타입 매개변수는 board테이블을 대상으로 하므로 BoardDTO로 설정한다.*/
+		List<BoardDTO> bbs = new Vector<BoardDTO>(); 
+		
+		//3개의 쿼리문
+		/* 검색조건에 일치하는 게시물을 얻어온 후 각 페이지에 출력할 구간까지
+		 설정한 서브 쿼리문 작성 */
+		String query = "SELECT * FROM ( "
+				+ " 		SELECT Tb.*, ROWNUM rNum FROM ( "
+				+ "				SELECT * FROM board ";
+		
+		//검색어가 있는 경우에만 where절을 추가한다.
+		if (map.get("searchWord") != null) {
+			//where 뒤부터 ? '%?%' 붙이는 쿼리문 작성도 가능한데
+			//이렇게 되면 인파라미터가 ? 1번 %?%가 2번이되고 밑에 between 뒤에 3,4번이 되잖아
+			//이렇게 쓰면 쩌어어 밑에 또 있을 경우 없을 경우로 if문나눠서 쓰게 된디 
+			query += " WHERE " + map.get("searchField")
+					+ " LIKE '%" +map.get("searchWord") + "%' ";
+		}
+		/*게시물의 구간을 결정하기 위해 between 혹은 비교연산자를 사용할 수 있다.
+		 아래의 where 절은 rNum>? 과 같이 변경할 수 있다.*/
+		query += " ORDER BY num DESC "
+				+ "		) Tb "
+				+ " ) "
+				+ " WHERE rNum BETWEEN ? AND ?";
+				
+		try {
+			//인파라미터가 있는 쿼리문으로 prepared객체 생성
+			psmt = con.prepareStatement(query);
+			//인파라미터 설정
+			psmt.setString(1, map.get("start").toString());
+			psmt.setString(2, map.get("end").toString());
+			//쿼리문 실행 및 ResultSet 반환
+			rs = psmt.executeQuery();
+			//더 이상 인출할 게시물이 없을 때까지 계속 반환함 - for문 안쓰고 while문 쓰는 이유
+			//2개 이상의 레코드가 반환될 수 있으므로 while문을 사용한다.
+			while(rs.next()) {
+				//레코드 하나를 DTO에 담고 DTO를 어레이리스트에 담아
+				//하나의 레코드를 저장할 수 있는 DTO객체를 생성한다.
+				BoardDTO dto = new BoardDTO();
+				
+				//setter를 이용해서 각 컬럼의 값을 멤버변수에 저장한다.
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setId(rs.getString("id"));
+				dto.setVisitcount(rs.getString("visitcount"));
+				
+				//List에 DTO를 추가한다.
+				bbs.add(dto);
+				
+			}
+		}
+		catch(Exception e) {
+			System.out.println("게시물 조회 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		//인출한 레코드를 저장한 List를 호출한 지점으로 반환
+		return bbs;
+	}
+	
 }
 	
 	//매개변수 3개가 있다고 치면 selectlist(int a, string b, char c) 추가적인 값이 들어가면 , , , 함수의 모양이
