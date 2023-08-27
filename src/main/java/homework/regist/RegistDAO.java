@@ -40,4 +40,24 @@ public class RegistDAO extends JDBConnect{
 		//반환값 0이면 false
 		return result;
 	}
+	
+	public boolean isIdExist(String id) {
+		String query = "SELECT COUNT(*) FROM regist_member WHERE id=? ";
+		int count = 0;
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, id);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		}
+			catch(Exception e) {
+				e.printStackTrace();
+			
+		}
+		return count > 0;
+		
+	}
 }
