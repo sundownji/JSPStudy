@@ -31,7 +31,7 @@ public class BoardPage {
          */
         
         //if(pageTemp != 1) {
-        if (true) {
+        if (pageTemp != 1) {
             pagingStr += "<a href='" + reqUrl + "?pageNum=1'>[첫 페이지]</a>";            
             pagingStr += "&nbsp;";
             pagingStr += "<a href='" + reqUrl + "?pageNum=" + (pageTemp - 1)
