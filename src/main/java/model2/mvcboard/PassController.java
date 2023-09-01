@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import utils.JSFunction;
 
-
 /*
 비회원제 게시판에서 게시물을 수정 및 삭제하기 위해서는 패스워드 검증이 먼저 선행되어야 한다.
 따라서 해당 페이지로 진입한 후 패스워드가 일치하는지 확인한 후 처리하게된다. 
@@ -46,9 +45,13 @@ public class PassController extends HttpServlet{
 		
 		//패스워드와 일치하는 게시물이 있는 경우에는 후속 처리를 한다.
 		if (confirmed) {
-			if (mode.equals("edit")) {
+			if (mode.equals("edit")) { //mode=edit인 경우
+				//서블릿에서 session 내장객체를 얻어온다.
 				HttpSession session = req.getSession();
+				//입력한 패스워드를 세션영역에 저장한다.
 				session.setAttribute("pass", pass);
+				//forwar가 아니라 sendirect로 수정페이지로 이동한다.
+				//앞에서 저장된 패스워드는 페이지를 이동하더라도 공유된다.
 				resp.sendRedirect("../mvcboard/edit.do?idx=" + idx);
 			}
 			//mode=delete 인 경우
