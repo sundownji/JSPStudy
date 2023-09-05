@@ -46,6 +46,7 @@
          <td>다운로드수</td>
         <td>${ dto.downcount }</td>
     </tr> 
+    
     <tr>  
         <td colspan="4" align="center">
             <button type="button" onclick="location.href='../mvcboard/pass.do?mode=edit&idx=${ param.idx }';">
